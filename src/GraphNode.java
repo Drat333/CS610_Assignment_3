@@ -1,7 +1,9 @@
+import com.sun.corba.se.impl.orbutil.graph.Graph;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class GraphNode {
+public class GraphNode implements Comparable{
     private final int index;
     private final ArrayList<GraphNode> outgoingEdges;
 
@@ -24,5 +26,20 @@ public class GraphNode {
 
     public int outSize(){
         return outgoingEdges.size();
+    }
+
+    public int index() {
+        return this.index;
+    }
+
+    public int compareTo(Object node) throws ClassCastException{
+        if (!(node instanceof GraphNode)){
+            throw new ClassCastException("Comparison target is not a GraphNode.");
+        }
+        return this.index - ((GraphNode) node).index;
+    }
+
+    public int compareTo(int i){
+        return this.index - i;
     }
 }

@@ -3,6 +3,8 @@ import java.util.Iterator;
 
 public class DirectedGraph {
     private ArrayList <GraphNode> nodes;
+    private ArrayList <GraphNode> visited; //for DFS
+
 
     public DirectedGraph(String str) {
         nodes = new ArrayList<>();
@@ -14,7 +16,7 @@ public class DirectedGraph {
         GraphNode endNode;
 
         while (true) {
-            //TODO: no need to find v and shorten string, keep track of index => more efficient
+            //FIXME: no need to find v and shorten string, keep track of index => more efficient
 
             //get strStart node
             strStart = str.indexOf('v');
@@ -47,7 +49,7 @@ public class DirectedGraph {
 
     private void insertNode(int index){
         //handles checks for inserting nodes into node collection
-        //assumes input nodes are labeled with no sequence gaps, 1-based
+        //assumes input nodes are labeled with no sequence gaps, 1-based indexing
         if (index > nodes.size()-1){
             for (int i = nodes.size(); i < index; i++) {
                 nodes.add(null);
@@ -57,30 +59,30 @@ public class DirectedGraph {
         else if (nodes.get(index) == null) {
             nodes.set(index,new GraphNode(index));
         }
-        //else node exists
+        //else node exists, no further action required
     }
 
 
 
     public ArrayList<GraphNode> getIncomingEdges(GraphNode v) {
-        //acyclic graph; ignore outgoing edges of v, and v itself
         ArrayList<GraphNode> output = new ArrayList<>();
         for (GraphNode node:nodes) {
-            if (!v.hasEdge(node) && node != v){
-                if (node.hasEdge(v)){
-                    output.add(node);
-                }
+            if (node.hasEdge(v)){
+                output.add(node);
             }
         }
-
         return output;
     }
 
     public boolean isDAG() {
+        //TODO: implement
+
         return false;
     }
 
     public ArrayList<GraphNode> getRoots() {
+        //TODO: implement
+
         return nodes;
     }
 
@@ -95,13 +97,76 @@ public class DirectedGraph {
     }
 
     public void printAsAdjacencyMatrix() {
+        System.out.println("\n\n\n\t");
+        for (int i = 0; i < nodes.size(); i++) {
+            System.out.print("\t"); System.out.print(i + 1);
+        }
+        System.out.println();
+
+        for (int i = 0; i < nodes.size(); i++) {
+            System.out.print(i + 1); System.out.print("\t");
+            for (int j = 0; j < nodes.size(); j++) {
+                if (nodes.get(j).hasEdge(nodes.get(i))){
+                    System.out.print(1);
+                } else{
+                    System.out.print("-");
+                }
+                System.out.print("\t");
+            }
+            System.out.println();
+        }
+
     }
 
     public ArrayList<GraphNode> findCycle(GraphNode v) {
+        //TODO: implement
+
         return nodes;
     }
 
-    public Iterator<GraphNode> getNodes(){
+
+    private boolean dfs(GraphNode start, GraphNode end) {
+        // FIXME: 4/26/2017 
+        boolean result = doDFS(start,end);
+        visited.clear();
+        return result;
+    }
+
+    private boolean doDFS(GraphNode start, GraphNode end) {
+        // FIXME: 4/26/2017
+        if (visited.contains(start)){
+            return false;
+        }
+
+        Iterator<GraphNode> outEdges = start.getEdges();
+
+        while (outEdges.hasNext()) {
+
+        }
+        return true;
+    }
+
+
+    public Iterator<GraphNode> getNodes() {
+        //for performing operations on each GraphNode in test cases
         return nodes.iterator();
     }
+
+
+    public void testing(){
+        //checking incoming edges
+        System.out.println("Node\tIncoming Edges");
+
+        for (GraphNode node:nodes) {
+            System.out.print(node.index()+1);
+            System.out.print("\t\t");
+            for (GraphNode edge : this.getIncomingEdges(node)) {
+                System.out.print(edge.index()+1);
+                System.out.print(" ");
+            }
+            System.out.println();
+        }
+
+    }
+
 }

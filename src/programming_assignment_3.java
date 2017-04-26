@@ -1,5 +1,3 @@
-import com.sun.corba.se.impl.orbutil.graph.Graph;
-
 import java.util.Iterator;
 
 public class programming_assignment_3 {
@@ -22,6 +20,6 @@ public class programming_assignment_3 {
 
         System.out.println("\n\n\n\n");
         DAG_A.testing();
-        DAG_A.printAsAdjacencyMatrix();
+        System.out.print("\n\nDAG_A is a DAG: "); System.out.println(DAG_A.isDAG());
     }
 }

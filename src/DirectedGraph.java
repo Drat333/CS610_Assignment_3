@@ -75,15 +75,49 @@ public class DirectedGraph {
     }
 
     public boolean isDAG() {
-        //TODO: implement
+        //modified implementation of TopologicalSort
 
-        return false;
+        ArrayList<GraphNode> roots = new ArrayList();
+        int [] incounter = new int[nodes.size()];
+
+        for (GraphNode node : nodes) {
+            incounter[node.index()] = this.getIncomingEdges(node).size();
+            if (incounter[node.index()] == 0){
+                roots.add(node);
+            }
+        }
+
+        int i = 1;
+        GraphNode node;
+        while (!roots.isEmpty()){
+            node = roots.remove(roots.size()-1);
+            i++;
+            Iterator<GraphNode> edges = node.getEdges();
+            while (edges.hasNext()){
+                GraphNode edge = edges.next();
+                incounter[edge.index()]--;
+                if (incounter[edge.index()] == 0){
+                    roots.add(edge);
+                }
+            }
+        }
+
+        if (i > nodes.size()){
+            return true;
+        } else{
+            return false;
+        }
     }
 
     public ArrayList<GraphNode> getRoots() {
-        //TODO: implement
+        ArrayList<GraphNode> roots = new ArrayList();
+        for (GraphNode node : nodes) {
+            if (this.getIncomingEdges(node).isEmpty()){
+                roots.add(node);
+            }
+        }
 
-        return nodes;
+        return roots;
     }
 
     public int edgeCount() {
@@ -155,7 +189,7 @@ public class DirectedGraph {
 
     public void testing(){
         //checking incoming edges
-        System.out.println("Node\tIncoming Edges");
+        /*System.out.println("Node\tIncoming Edges");
 
         for (GraphNode node:nodes) {
             System.out.print(node.index()+1);
@@ -166,7 +200,14 @@ public class DirectedGraph {
             }
             System.out.println();
         }
+*/
 
+        //checking roots
+        System.out.println("\n\nRoots:");
+        for (GraphNode node:
+             this.getRoots()) {
+            System.out.println(node.index() + 1);
+        }
     }
 
 }

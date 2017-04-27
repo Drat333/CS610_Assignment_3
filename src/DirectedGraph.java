@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 public class DirectedGraph {
     private ArrayList <GraphNode> nodes;
+    ArrayList<GraphNode> visited;
 
     public DirectedGraph(String str) {
         nodes = new ArrayList<>();
@@ -148,29 +149,38 @@ public class DirectedGraph {
     }
 
     public ArrayList<GraphNode> findCycle(GraphNode v) {
-        //FIXME: doesn't return a correct cycle all the time
+        //FIXME: doesn't return a correct cycle all the time. DFS uses edges, we're using only nodes
         //DFS starting from v, terminates if we find a back edge or if DFS completes
-        ArrayList<GraphNode> output = new ArrayList();
-        ArrayList<GraphNode> visited = new ArrayList();
+        visited = new ArrayList();
+        ArrayList<GraphNode> output = null;
 
+        visited.add(v);
         for (GraphNode edge : v.getEdges()){
-            output = findCycleHelper(v,edge,output,visited);
-        }
-
-        return output;
-    }
-
-    private ArrayList<GraphNode> findCycleHelper(GraphNode v, GraphNode w, ArrayList<GraphNode> output, ArrayList<GraphNode> visited){
-        if(!visited.contains(w)){
-            output.add(w);
-            visited.add(w);
-            if (v != w){
-                for (GraphNode edge : w.getEdges()){
-                    output = findCycleHelper(v,edge,output,visited);
-                }
+            output = new ArrayList();
+            output.add(v);
+            output = findCycleHelper(edge,output);
+            if (output != null){
+                return output;
             }
         }
         return output;
+    }
+
+    private ArrayList<GraphNode> findCycleHelper( GraphNode w, ArrayList<GraphNode> output){
+        if (visited.contains(w)){   //this is a back edge, we found a cycle
+            return output;
+        }
+
+        output.add(w);
+        visited.add(w);
+        for (GraphNode edge : w.getEdges()){
+            ArrayList result = findCycleHelper(edge,output);
+            if (result != null){
+                return result;
+            }
+        }
+
+        return null;
     }
 
 

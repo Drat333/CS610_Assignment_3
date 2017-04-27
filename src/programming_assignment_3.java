@@ -16,9 +16,14 @@ public class programming_assignment_3 {
 
         for (GraphNode node : DAG_A.getNodes()){
             System.out.print("Cycle of v" + Integer.toString(node.index() + 1) + ": ");
-            for (GraphNode cycleNode : DAG_A.findCycle(node)) {
-                System.out.print(cycleNode.index() + 1);
-                System.out.print(", ");
+            ArrayList<GraphNode> cycle = DAG_A.findCycle(node);
+            if (cycle == null){
+                System.out.print("No cycle");
+            } else{
+                for (GraphNode cycleNode : cycle) {
+                    System.out.print(cycleNode.index() + 1);
+                    System.out.print(", ");
+                }
             }
             System.out.println();
         }

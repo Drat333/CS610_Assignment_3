@@ -1,10 +1,7 @@
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class DirectedGraph {
     private ArrayList <GraphNode> nodes;
-    private ArrayList <GraphNode> visited; //for DFS
-
 
     public DirectedGraph(String str) {
         nodes = new ArrayList<>();
@@ -66,7 +63,7 @@ public class DirectedGraph {
 
     public ArrayList<GraphNode> getIncomingEdges(GraphNode v) {
         ArrayList<GraphNode> output = new ArrayList<>();
-        for (GraphNode node:nodes) {
+        for (GraphNode node : nodes) {
             if (node.hasEdge(v)){
                 output.add(node);
             }
@@ -92,9 +89,7 @@ public class DirectedGraph {
         while (!roots.isEmpty()){
             node = roots.remove(roots.size()-1);
             i++;
-            Iterator<GraphNode> edges = node.getEdges();
-            while (edges.hasNext()){
-                GraphNode edge = edges.next();
+            for (GraphNode edge : node.getEdges()){
                 incounter[edge.index()]--;
                 if (incounter[edge.index()] == 0){
                     roots.add(edge);
@@ -153,37 +148,35 @@ public class DirectedGraph {
     }
 
     public ArrayList<GraphNode> findCycle(GraphNode v) {
-        //TODO: implement
+        //FIXME: doesn't return a correct cycle all the time
+        //DFS starting from v, terminates if we find a back edge or if DFS completes
+        ArrayList<GraphNode> output = new ArrayList();
+        ArrayList<GraphNode> visited = new ArrayList();
 
-        return nodes;
-    }
-
-
-    private boolean dfs(GraphNode start, GraphNode end) {
-        // FIXME: 4/26/2017 
-        boolean result = doDFS(start,end);
-        visited.clear();
-        return result;
-    }
-
-    private boolean doDFS(GraphNode start, GraphNode end) {
-        // FIXME: 4/26/2017
-        if (visited.contains(start)){
-            return false;
+        for (GraphNode edge : v.getEdges()){
+            output = findCycleHelper(v,edge,output,visited);
         }
 
-        Iterator<GraphNode> outEdges = start.getEdges();
+        return output;
+    }
 
-        while (outEdges.hasNext()) {
-
+    private ArrayList<GraphNode> findCycleHelper(GraphNode v, GraphNode w, ArrayList<GraphNode> output, ArrayList<GraphNode> visited){
+        if(!visited.contains(w)){
+            output.add(w);
+            visited.add(w);
+            if (v != w){
+                for (GraphNode edge : w.getEdges()){
+                    output = findCycleHelper(v,edge,output,visited);
+                }
+            }
         }
-        return true;
+        return output;
     }
 
 
-    public Iterator<GraphNode> getNodes() {
+    public ArrayList<GraphNode> getNodes() {
         //for performing operations on each GraphNode in test cases
-        return nodes.iterator();
+        return nodes;
     }
 
 

@@ -1,9 +1,6 @@
-import com.sun.corba.se.impl.orbutil.graph.Graph;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 
-public class GraphNode implements Comparable{
+public class GraphNode{
     private final int index;
     private final ArrayList<GraphNode> outgoingEdges;
 
@@ -16,8 +13,8 @@ public class GraphNode implements Comparable{
         outgoingEdges.add(node);
     }
 
-    public Iterator<GraphNode> getEdges(){
-        return outgoingEdges.iterator();
+    public ArrayList<GraphNode> getEdges(){
+        return outgoingEdges;
     }
 
     public boolean hasEdge(GraphNode node){
@@ -30,16 +27,5 @@ public class GraphNode implements Comparable{
 
     public int index() {
         return this.index;
-    }
-
-    public int compareTo(Object node) throws ClassCastException{
-        if (!(node instanceof GraphNode)){
-            throw new ClassCastException("Comparison target is not a GraphNode.");
-        }
-        return this.index - ((GraphNode) node).index;
-    }
-
-    public int compareTo(int i){
-        return this.index - i;
     }
 }

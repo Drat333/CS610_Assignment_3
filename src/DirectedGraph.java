@@ -128,7 +128,7 @@ public class DirectedGraph {
     }
 
     public void printAsAdjacencyMatrix() {
-        System.out.println("\n\n\n\t");
+        System.out.println("\n\t");
         for (int i = 0; i < nodes.size(); i++) {
             System.out.print("\t"); System.out.print(i + 1);
         }
@@ -150,20 +150,9 @@ public class DirectedGraph {
     }
 
     public ArrayList<GraphNode> findCycle(GraphNode v) {
-        //FIXME: doesn't return a correct cycle all the time. DFS uses edges, we're using only nodes
         //DFS starting from v, terminates if we find a back edge or if DFS completes
         visited = new ArrayList();
         ArrayList<GraphNode> output = new ArrayList();
-
-        /*visited.add(v);
-        for (GraphNode edge : v.getEdges()){
-            output = new ArrayList();
-            output.add(v);
-            output = findCycleVisit(edge,output);
-            if (output != null){
-                return output;
-            }
-        }*/
 
         visited.add(v);
         output.add(v);
@@ -215,51 +204,12 @@ public class DirectedGraph {
         }
 
         return null;
-
-
-        /*if (visited.contains(w)){
-            if ()
-            return output;
-        }
-
-        output.add(w);
-        visited.add(w);
-        for (GraphNode edge : w.getEdges()){
-            ArrayList result = findCycleVisit(edge,output);
-            if (result != null){
-                return result;
-            }
-        }*/
     }
 
 
     public ArrayList<GraphNode> getNodes() {
         //for performing operations on each GraphNode in test cases
         return nodes;
-    }
-
-
-    public void testing(){
-        //checking incoming edges
-        /*System.out.println("Node\tIncoming Edges");
-
-        for (GraphNode node:nodes) {
-            System.out.print(node.index()+1);
-            System.out.print("\t\t");
-            for (GraphNode edge : this.getIncomingEdges(node)) {
-                System.out.print(edge.index()+1);
-                System.out.print(" ");
-            }
-            System.out.println();
-        }
-*/
-
-        //checking roots
-        System.out.println("\n\nRoots:");
-        for (GraphNode node:
-             this.getRoots()) {
-            System.out.println(node.index() + 1);
-        }
     }
 
 }

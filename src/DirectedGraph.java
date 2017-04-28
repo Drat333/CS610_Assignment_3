@@ -15,8 +15,6 @@ public class DirectedGraph {
         GraphNode endNode;
 
         while (true) {
-            //FIXME: no need to find v and shorten string, keep track of index => more efficient
-
             //get strStart node
             strStart = str.indexOf('v');
             strEnd = str.indexOf(',');
@@ -107,6 +105,7 @@ public class DirectedGraph {
     }
 
     public ArrayList<GraphNode> getRoots() {
+        //FIXME: NOT EFFICIENT
         ArrayList<GraphNode> roots = new ArrayList();
         for (GraphNode node : nodes) {
             if (this.getIncomingEdges(node).isEmpty()){
@@ -128,7 +127,7 @@ public class DirectedGraph {
     }
 
     public void printAsAdjacencyMatrix() {
-        System.out.println("\n\t");
+        System.out.println("\t");
         for (int i = 0; i < nodes.size(); i++) {
             System.out.print("\t"); System.out.print(i + 1);
         }

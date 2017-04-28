@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class DirectedGraph {
@@ -152,35 +153,83 @@ public class DirectedGraph {
         //FIXME: doesn't return a correct cycle all the time. DFS uses edges, we're using only nodes
         //DFS starting from v, terminates if we find a back edge or if DFS completes
         visited = new ArrayList();
-        ArrayList<GraphNode> output = null;
+        ArrayList<GraphNode> output = new ArrayList();
 
-        visited.add(v);
+        /*visited.add(v);
         for (GraphNode edge : v.getEdges()){
             output = new ArrayList();
             output.add(v);
-            output = findCycleHelper(edge,output);
+            output = findCycleVisit(edge,output);
             if (output != null){
                 return output;
             }
+        }*/
+
+        visited.add(v);
+        output.add(v);
+        ArrayList<GraphNode> result = null;
+        for (GraphNode w : v.getEdges()){
+            if (output == null){
+                break;
+            }
+            if (!visited.contains(w)){
+                visited.add(w);
+                output.add(w);
+                result = findCycleVisit(w,output);
+                if (result != null){
+                    return result;
+                }
+                output.remove(output.size()-1);
+            }
+            else{
+                if (!output.contains(w)){
+                    return output;
+                }
+
+            }
         }
-        return output;
+
+        return null;
     }
 
-    private ArrayList<GraphNode> findCycleHelper( GraphNode w, ArrayList<GraphNode> output){
-        if (visited.contains(w)){   //this is a back edge, we found a cycle
+    private ArrayList<GraphNode> findCycleVisit(GraphNode u, ArrayList<GraphNode> output){
+
+        ArrayList<GraphNode> result = null;
+        for (GraphNode w : u.getEdges()){
+            if (!visited.contains(w)){
+                visited.add(w);
+                output.add(w);
+                result = findCycleVisit(w,output);
+                if (result != null){
+                    return result;
+                }
+                output.remove(output.size()-1);
+            }
+            else{
+                if (output.contains(w)){
+                    output.add(w);
+                    return output;
+                }
+
+            }
+        }
+
+        return null;
+
+
+        /*if (visited.contains(w)){
+            if ()
             return output;
         }
 
         output.add(w);
         visited.add(w);
         for (GraphNode edge : w.getEdges()){
-            ArrayList result = findCycleHelper(edge,output);
+            ArrayList result = findCycleVisit(edge,output);
             if (result != null){
                 return result;
             }
-        }
-
-        return null;
+        }*/
     }
 
 

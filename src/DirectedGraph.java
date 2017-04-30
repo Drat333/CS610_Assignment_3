@@ -1,9 +1,8 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class DirectedGraph {
     private ArrayList <GraphNode> nodes;
-    ArrayList<GraphNode> visited;
+    private ArrayList<GraphNode> visited;
 
     public DirectedGraph(String str) {
         nodes = new ArrayList<>();
@@ -74,7 +73,7 @@ public class DirectedGraph {
     public boolean isDAG() {
         //modified implementation of TopologicalSort
 
-        ArrayList<GraphNode> roots = new ArrayList();
+        ArrayList<GraphNode> roots = new ArrayList<>();
         int [] incounter = new int[nodes.size()];
 
         for (GraphNode node : nodes) {
@@ -105,8 +104,7 @@ public class DirectedGraph {
     }
 
     public ArrayList<GraphNode> getRoots() {
-        //FIXME: NOT EFFICIENT
-        ArrayList<GraphNode> roots = new ArrayList();
+        ArrayList<GraphNode> roots = new ArrayList<>();
         for (GraphNode node : nodes) {
             if (this.getIncomingEdges(node).isEmpty()){
                 roots.add(node);
@@ -150,16 +148,13 @@ public class DirectedGraph {
 
     public ArrayList<GraphNode> findCycle(GraphNode v) {
         //DFS starting from v, terminates if we find a back edge or if DFS completes
-        visited = new ArrayList();
-        ArrayList<GraphNode> output = new ArrayList();
+        visited = new ArrayList<>();
+        ArrayList<GraphNode> output = new ArrayList<>();
 
         visited.add(v);
         output.add(v);
         ArrayList<GraphNode> result = null;
         for (GraphNode w : v.getEdges()){
-            if (output == null){
-                break;
-            }
             if (!visited.contains(w)){
                 visited.add(w);
                 output.add(w);
